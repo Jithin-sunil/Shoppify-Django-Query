@@ -10,22 +10,22 @@
         {% csrf_token %}
         <table>
             <tr>
-                <td>District</td>
-                <td><select name="sel_district" id="">
+                <td>Category</td>
+                <td><select name="sel_category" id="">
                     <option value="">--Select--</option>
-                    {% for i in districts %}
+                    {% for i in categorys %}
                     <option
-                        {% if i.id == placedata.district_id %}
+                        {% if i.id == subcategorydata.category_id %}
                         selected 
                         {% endif %}
-                        value="{{i.id}}">{{i.district_name}}
+                        value="{{i.id}}">{{i.category_name}}
                     </option>
                     {% endfor %}
                 </select></td>
             </tr>
             <tr>
-                <td>Place</td>
-                <td><input type="text" name="txt_place" id="" value="{{placedata.place_name}}"></td>
+                <td>Subcategory</td>
+                <td><input type="text" name="txt_subcategory" id="" value="{{subcategorydata.subcategory_name}}"></td>
             </tr>
             <tr>
                 <td colspan="2" align="center"><input type="submit" value="Submit"></td>
@@ -36,17 +36,17 @@
     <table>
         <tr>
             <td>SI NO</td>
-            <td>District</td>
-            <td>Place</td>
+            <td>Category</td>
+            <td>Subcategory</td>
             <td>Action</td>
         </tr>
-        {% for i in place %}
+        {% for i in subcategory %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td>{{i.district_name}}</td>
-            <td>{{i.place_name}}</td>
-            <td><a href="{% url 'Admin:delplace' i.id %}">Delete</a>
-                <a href="{% url 'Admin:editplace' i.id %}">Edit</a></td>
+            <td>{{i.category_name}}</td>
+            <td>{{i.subcategory_name}}</td>
+            <td><a href="{% url 'Admin:delsubcategory' i.id %}">Delete</a>
+                <a href="{% url 'Admin:editsubcategory' i.id %}">Edit</a></td>
         </tr>
         {% endfor %}
     </table>

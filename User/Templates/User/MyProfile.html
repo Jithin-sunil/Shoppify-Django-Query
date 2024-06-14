@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoppify</title>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <!-- <td colspan="2" align="center"><img src="{{user.userphoto}}"  alt="" width="150" height="150"></td> -->
+                <td></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{user.username}}</td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{user.usercontact}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{user.useremail}}</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>{{user.useraddress}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><a href="{% url 'User:editprofile' %}">EditProfile</a>
+                   <a href="{% url 'User:changepassword' %}">ChangePassword</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

@@ -10,4 +10,20 @@ urlpatterns = [
 
 
         path('place/',views.place,name='place'),
+        path('delplace/<int:pid>',views.delplace,name='delplace'),
+        path('editplace/<int:eid>',views.editplace,name='editplace'),
+
+
+        path('category/',views.category,name='category'),
+        path('delcategory/<int:cid>',views.delcategory,name='delcategory'),
+        path('editcategory/<int:eid>',views.editcategory,name='editcategory'),
+
+
+        path('subcategory/',views.subcategory,name='subcategory'),
+        path('delsubcategory/<int:sid>',views.delsubcategory,name='delsubcategory'),
+        path('editsubcategory/<int:eid>',views.editsubcategory,name='editsubcategory'),
+
+        path('admin/',views.admin,name='admin'),
+
+        path('home/',views.home,name='home'),
 ]

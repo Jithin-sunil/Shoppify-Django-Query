@@ -30,13 +30,106 @@ def editdistrict(request,eid):
 
 
 def place(request):
-    places = fetch_joined_records("Admin_tbl_place", "Admin_tbl_district", "Admin_tbl_place.district_id = Admin_tbl_district.id")
+    place =  fetch_joined_records(
+        "p.id as id, p.place_name, d.id as district_id, d.district_name",
+        "Admin_tbl_place p",
+        "Admin_tbl_district d",
+        "p.district_id = d.id"
+    )
     district = fetch_all_records("Admin_tbl_district")
     if request.method == 'POST':
         place_name = request.POST.get('txt_place')
         district_id = request.POST.get('sel_district')
-        insert_record('Admin_tbl_place', ['place_name','district_id'], [place_name,district_id])
+        insert_record('Admin_tbl_place', ['place_name','district_id'], [place_name,district_id])    
         return redirect('Admin:place')
     else:
         # print(place)
         return render(request, 'Admin/Place.html',{'place': place,'districts':district})
+
+
+def delplace(request,pid):
+    delete_record("Admin_tbl_place",pid)
+    return redirect('Admin:place')
+
+def editplace(request,eid):
+    place = fetch_record_by_id("Admin_tbl_place",eid)
+    district = fetch_all_records("Admin_tbl_district")
+    if request.method == 'POST':
+        place_name = request.POST.get('txt_place')
+        district_id = request.POST.get('sel_district')
+        update_record("Admin_tbl_place",['place_name','district_id'],[place_name,district_id],eid)
+        return redirect('Admin:place')
+    else:
+        # print(place)
+        return render(request, 'Admin/Place.html', {'placedata': place,'districts':district})
+
+
+def category(request):
+    category = fetch_all_records("Admin_tbl_category")
+    if request.method == 'POST':
+        category_name = request.POST.get('txt_category')
+        insert_record('Admin_tbl_category', ['category_name'], [category_name])
+        return redirect('Admin:category')
+    else:
+        return render(request, 'Admin/Category.html',{'category': category})
+
+
+def delcategory(request,cid):
+    delete_record("Admin_tbl_category",cid)
+    return redirect('Admin:category')
+
+def editcategory(request,eid):
+    category = fetch_record_by_id("Admin_tbl_category",eid)
+    if request.method == 'POST':
+        category_name = request.POST.get('txt_category')
+        update_record("Admin_tbl_category",['category_name'],[category_name],eid)
+        return redirect('Admin:category')
+    else:
+        return render(request, 'Admin/Category.html', {'categorydata': category})
+
+
+def subcategory(request):
+    subcategory = fetch_joined_records(
+        "s.id as id, s.subcategory_name, c.id as category_id, c.category_name",
+        "Admin_tbl_subcategory s",
+        "Admin_tbl_category c",
+        "s.category_id = c.id"
+    )
+    category = fetch_all_records("Admin_tbl_category")
+    if request.method == 'POST':
+        subcategory_name = request.POST.get('txt_subcategory')
+        category_id = request.POST.get('sel_category')
+        insert_record('Admin_tbl_subcategory', ['subcategory_name','category_id'], [subcategory_name,category_id])    
+        return redirect('Admin:subcategory')
+    else:
+        return render(request, 'Admin/Subcategory.html',{'subcategory': subcategory,'categorys':category})
+
+
+def delsubcategory(request,sid):
+    delete_record("Admin_tbl_subcategory",sid)
+    return redirect('Admin:subcategory')
+
+def editsubcategory(request,eid):
+    subcategory = fetch_record_by_id("Admin_tbl_subcategory",eid)
+    category = fetch_all_records("Admin_tbl_category")
+    if request.method == 'POST':
+        subcategory_name = request.POST.get('txt_subcategory')
+        category_id = request.POST.get('sel_category')
+        update_record("Admin_tbl_subcategory",['subcategory_name','category_id'],[subcategory_name,category_id],eid)
+        return redirect('Admin:subcategory')
+    else:
+        return render(request, 'Admin/Subcategory.html', {'subcategorydata': subcategory,'categorys':category})
+
+
+def admin(request):
+    if request.method == 'POST':
+        admin_name = request.POST.get('txt_name')
+        admin_email = request.POST.get('txt_email')
+        admin_password = request.POST.get('txt_password')
+        insert_record('Admin_tbl_admin', ['admin_name','admin_email','admin_password'], [admin_name,admin_email,admin_password])
+        return redirect('Admin:admin')
+    else:
+        return render(request, 'Admin/AdminRegistration.html',{'admin': admin})
+
+def home(request):
+    return render(request, 'Admin/HomePage.html')
