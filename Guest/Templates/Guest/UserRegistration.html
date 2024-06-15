@@ -41,3 +41,10 @@
     </form>
 </body>
 </html>
+
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'Guest:login' %}";
+</script>
+{% endif %}

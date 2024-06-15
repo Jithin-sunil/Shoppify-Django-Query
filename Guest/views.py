@@ -15,10 +15,27 @@ def user(request):
                 ['username', 'useremail', 'usercontact', 'userpassword', 'useraddress', 'userphoto'],
                 [name, email, contact, password, address, photo]
             )
-        return redirect('Guest:user')
+        return render(request,'Guest/UserRegistration.html',{'msg':'Registrated successfully'})
     else:
         return render(request,'Guest/UserRegistration.html')
 
+def shop(request):
+    district=fetch_all_records('Admin_tbl_district')
+    if request.method == 'POST':
+        shop_name = request.POST.get('txt_name')
+        shop_email = request.POST.get('txt_email')
+        shop_contact = request.POST.get('txt_contact')
+        shop_photo=request.FILES.get('file_photo')
+        shop_proof =request.FILES.get('file_proof')
+        shop_address = request.POST.get('txt_address')
+        shop_password = request.POST.get('txt_password')
+        insert_record(
+                'Guest_tbl_shop',
+                ['shopname','shopemail','shoppassword'],
+                [shop_name,shop_email,shop_password]
+            )
+        return render(request,'Guest/ShopRegistration.html',{'msg':'Registrated successfully'})
+    return render(request, 'Guest/ShopRegistration.html',{'district':district})
 
 def login(request):
     if request.method == 'POST':
@@ -35,5 +52,14 @@ def login(request):
             request.session['admin_name'] = admin['admin_name']
             return redirect('Admin:home') 
         else:
-            return render(request, 'Guest/Login.html',{'msg':'Invalid password'})
-    return render(request, 'Guest/Login.html',{'msg1':'invalid username or password'})
+            return render(request, 'Guest/Login.html',{'msg':'Invalid password or password'})
+        
+    else:
+        return render(request, 'Guest/Login.html')
+
+def ajaxplace(request):
+    did=request.GET.get('did')
+    district = fetch_record_by_id('Admin_tbl_district', did)
+    place= fetch_records_by_fields('Admin_tbl_place', ['district_id'], [did])
+    print(place)
+    return render(request, 'Guest/AjaxPlace.html',{'placedata':place})

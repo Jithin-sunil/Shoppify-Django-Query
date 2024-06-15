@@ -45,3 +45,9 @@
 </body>
 
 </html>
+{% if msg %}
+<script>
+    alert("{{msg}}");
+    window.location = "{% url 'User:myprofile' %}";
+</script>
+{% endif %}

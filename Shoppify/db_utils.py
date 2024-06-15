@@ -34,20 +34,31 @@ def fetch_records_by_fields(table_name, fields, field_values):
 
 
 
-def insert_record(table_name, columns, values):
-    columns_str = ", ".join(columns)
-    placeholders = ", ".join(["?"] * len(values))
-    query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({placeholders})"
-    return insert(query, values)      
-
 # def insert_record(table_name, columns, values):
 #     columns_str = ", ".join(columns)
 #     placeholders = ", ".join(["?"] * len(values))
 #     query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({placeholders})"
+#     return insert(query, values)      
+
+def insert_record(table_name, columns, values):
+    columns_str = ", ".join(columns)
+    placeholders = ", ".join(["?"] * len(values))
+    query = f"INSERT INTO {table_name} ({columns_str}) VALUES ({placeholders})"
     
-#     # Convert photo to binary data
-#     params = values[:5] + [values[5].read()]  # Assuming values[5] is the photo file
-#     return execute_query(query, params)
+    # Check if there are enough values
+    if len(values) < len(columns):
+        raise ValueError("The number of values provided does not match the number of columns.")
+    
+    # Convert photo to binary data if it's a file object
+    params = []
+    for value in values:
+        if hasattr(value, 'read'):  # Check if value is a file object
+            params.append(value.read())  # Read file content
+        else:
+            params.append(value)  # Use value as-is
+
+    return execute_query(query, params)
+
 
 
 def update_record(table_name, columns, values, record_id):
@@ -71,8 +82,7 @@ def delete_record(table_name, record_id):
 #     """
 #     # print(query)
 #     if where_clause:
-#         query += f" WHERE {where_clause}"
-       
+#         query += f" WHERE {where_clause}"    
 #     return fetch_all(query, params)
 
 
